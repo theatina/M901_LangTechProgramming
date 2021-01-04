@@ -1,0 +1,8 @@
+Regex
+
+-> emails
+-> hyphenation
+-> dots
+-> commas
+-> alternative patterns in expression to allow some formats eg. email address
+-> lowercase (to avoid case sensitivity)
