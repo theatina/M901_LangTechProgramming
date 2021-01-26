@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 '''
  
 Christina-Theano Kylafi
@@ -11,7 +14,6 @@ import re
 
 class DocError(Exception):
     '''
-
     Exception to be risen in case of document error along with the proper message each time
     
     '''
@@ -61,6 +63,17 @@ class FrequenciesGenerator:
         return tokens
 
     def generate_frequencies(self, word_list):
+        '''
+        Finds the frequency of the given token
+
+        Parameters:     token: string
+                        token of which the frequency is found - if the token is included in either the document 'f_name' (if given) or the whole corpus
+
+        Returns:        frequency: int
+                        frequency of the token if the token is found in the respective dictionary or 0 if the token is not found or the document 'f_name' given, does not exist
+
+        '''
+
         freq_dict = {}
         if len(word_list)==0:
             return -9
@@ -75,6 +88,17 @@ class FrequenciesGenerator:
 
 
     def read_folder(self):
+        '''
+        Finds the frequency of the given token
+
+        Parameters:     token: string
+                        token of which the frequency is found - if the token is included in either the document 'f_name' (if given) or the whole corpus
+
+        Returns:        frequency: int
+                        frequency of the token if the token is found in the respective dictionary or 0 if the token is not found or the document 'f_name' given, does not exist
+
+        '''
+
         for sub_d_path, d_names, files_d in os.walk(self.source_folder):
             for f_name in files_d:
                 try:
@@ -93,7 +117,9 @@ class FrequenciesGenerator:
                     file_text_reader.close()
                     token_freq = self.generate_frequencies(text_tokens)
                     self.file_frequencies[f_name] = token_freq
-                
+            
+            for d in d_names:
+                print(d)
 
         for f_name in self.file_frequencies:
             # file_dir = self.file_frequencies[f_name]
@@ -110,9 +136,11 @@ class FrequenciesGenerator:
         '''
         Finds the frequency of the given token
 
-        Parameters:     token: token of which the frequency is found - if the token is included in either the document 'f_name' (if given) or the whole corpus
+        Parameters:     token: string
+                        token of which the frequency is found - if the token is included in either the document 'f_name' (if given) or the whole corpus
 
-        Returns:        frequency(int): frequency of the token if the token is found in the respective dictionary or 0 if the token is not found or the document 'f_name' given, does not exist
+        Returns:        frequency: int
+                        frequency of the token if the token is found in the respective dictionary or 0 if the token is not found or the document 'f_name' given, does not exist
 
         '''
 
@@ -143,6 +171,17 @@ class FrequenciesGenerator:
 
 
     def calculate_similarity(self, file_a, file_b):
+        '''
+        Finds the frequency of the given token
+
+        Parameters:     token: string
+                        token of which the frequency is found - if the token is included in either the document 'f_name' (if given) or the whole corpus
+
+        Returns:        frequency: int
+                        frequency of the token if the token is found in the respective dictionary or 0 if the token is not found or the document 'f_name' given, does not exist
+
+        '''
+
         file_similarity = 0
         
         try:

@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 '''
  
 Christina-Theano Kylafi
@@ -11,7 +14,7 @@ import final_project as fpro
 freqGen = fpro.FrequenciesGenerator("../data/test_data_901_final_project/")
 freqGen.read_folder()
 
-#1 Check function calculate_similarity() 
+# 1 Check function calculate_similarity() 
 # file_1 = "Chapter12.pdf.txt"
 # file_2 = "Chapter8.pdf.txt"
 # print(f"\n> Similarity between files '{file_1} & '{file_2}': {freqGen.calculate_similarity(file_1,file_2):.2f}%\n")
