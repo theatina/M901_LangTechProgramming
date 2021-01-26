@@ -1,0 +1,149 @@
+Total tokens in corpus: 95421
+
+Frequency: 3 | count: 3989
+Frequency: 2 | count: 7550
+Frequency: 1 | count: 63981
+
+
+File   :   Number of tokens
+
+Chapter8.pdf.txt: 614
+Proigmena_Psifiaka8.ppt.txt: 321
+15170.pdf.txt: 3805
+se02_requirements.pdf.txt: 407
+se11_methodologies.pdf.txt: 355
+29721.pdf.txt: 5748
+Syllogi_Metrisewn11.ppt.txt: 247
+Nets.pdf.txt: 3778
+lecture_4.pps.txt: 354
+Chapter4.doc.txt: 861
+katsafados.meteoclimate.v2016.I.pdf.txt: 787
+Chapter1.pdf.txt: 929
+05272.pdf.txt: 7597
+DB1LabNotes.doc.txt: 4805
+lecture_14.pps.txt: 271
+Proigmena_Psifiaka11.ppt.txt: 231
+arxeio_manual.pdf.txt: 487
+Syllogi_Metrisewn9.ppt.txt: 481
+Proigmena_Psifiaka1.ppt.txt: 523
+se03_modelling.pdf.txt: 753
+lecture_5.pps.txt: 311
+Syllogi_Metrisewn10.ppt.txt: 274
+Chapter5.doc.txt: 1047
+35545.pdf.txt: 3105
+lecture_15.pps.txt: 266
+Proigmena_Psifiaka10.ppt.txt: 68
+katsafados.meteoclimate.v2016.II.pdf.txt: 980
+Syllogi_Metrisewn8.ppt.txt: 249
+Chapter9.pdf.txt: 808
+09939.pdf.txt: 7332
+Proigmena_Psifiaka9.ppt.txt: 83
+Syllogi_Metrisewn1.ppt.txt: 342
+malaria_health professionals_2013-final.ppt.txt: 1239
+algorithmoi kai domes dedomenon.doc.txt: 2179
+Handout 03. Noise.doc.txt: 219
+35354.pdf.txt: 7806
+Arxitektonikh_Thewria_1-5.pdf.txt: 4604
+Chapter2.pdf.txt: 1039
+ANIMATION.ppt.txt: 775
+35557.pdf.txt: 13916
+Unix-Kazarlis.doc.txt: 2794
+lecture_7.pps.txt: 318
+Syllogi_Metrisewn12.ppt.txt: 257
+java - lec1 - intro.pdf.txt: 753
+Proigmena_Psifiaka2.ppt.txt: 489
+Proigmena_Psifiaka12.ppt.txt: 247
+revoke_manual.pdf.txt: 254
+35585.pdf.txt: 8773
+17785.pdf.txt: 5241
+Syllogi_Metrisewn3.ppt.txt: 394
+Wikis.pdf.txt: 476
+35368.pdf.txt: 8280
+aa.txt: 3420
+Synth_Tilepoik_Diatax_Simeiwseis.doc.txt: 2678
+Syllogi_Metrisewn2.ppt.txt: 519
+02963.pdf.txt: 6529
+35418.pdf.txt: 3631
+SoftDev.pdf.txt: 1417
+35884.pdf.txt: 7319
+Chapter3.pdf.txt: 554
+Syllogi_Metrisewn13.ppt.txt: 219
+lecture_6.pps.txt: 308
+Handout 04. LinkBudget.doc.txt: 698
+Proigmena_Psifiaka3.ppt.txt: 592
+Mobile_Communications_papatsoris.ppt.txt: 3196
+35463.pdf.txt: 2967
+CommsII_Papats.ppt.txt: 1755
+SQL-notes.pdf.txt: 1309
+se01_introduction.pdf.txt: 334
+Proigmena_Psifiaka13.ppt.txt: 286
+10588.pdf.txt: 6007
+19238.pdf.txt: 4771
+Chapter6(1).pdf.txt: 995
+Proigmena_Psifiaka6.ppt.txt: 197
+lecture_13.pps.txt: 349
+se10_verification.pdf.txt: 1236
+Chapter3.doc.txt: 1237
+Chapter10.pdf.txt: 664
+lecture_3.pps.txt: 396
+27445.pdf.txt: 9746
+psifiaki_epeksesrgasia_eikonas_simeioseis_strouth.pdf.txt: 1375
+Syllogi_Metrisewn7.ppt.txt: 253
+theOOPfinal.doc.txt: 1791
+DIALEXH KaTh k. ALOGOSKOYFH.pdf.txt: 705
+a.txt: 1746
+09167.pdf.txt: 7572
+se05_modelingUML.pdf.txt: 601
+faq.pdf.txt: 369
+Syllogi_Metrisewn6.ppt.txt: 103
+exwfyllo_paroysiasewn.ppt.txt: 55
+18569.pdf.txt: 4982
+Moodle-1.pdf.txt: 856
+psifiaki_epeksesrgasia_eikonas_diafaneies_strouth.pps.txt: 510
+Proigmena_Psifiaka7.ppt.txt: 206
+lecture_12.pps.txt: 297
+Chapter7.pdf.txt: 1028
+Chapter2.doc.txt: 858
+35458.pdf.txt: 5497
+Programming_I.pdf.txt: 2647
+lecture_2.pps.txt: 249
+Chapter11.pdf.txt: 589
+Syllogi_Metrisewn4.ppt.txt: 371
+multimedia systems lab.doc.txt: 4931
+30195.pdf.txt: 7320
+Chapter4(1).pdf.txt: 743
+lecture_9.pps.txt: 327
+Proigmena_Psifiaka15.ppt.txt: 477
+lecture_10.pps.txt: 406
+se07_design.pdf.txt: 749
+DigCourses_Lec06.pdf.txt: 474
+Proigmena_Psifiaka5.ppt.txt: 318
+psifiaka_kyklomata.ppt.txt: 842
+35522.pdf.txt: 8594
+Chapter13.pdf.txt: 550
+Syllogi_Metrisewn15.ppt.txt: 185
+Chapter5.pdf.txt: 596
+Notes_GIMP_2015.pdf.txt: 523
+entypo.pdf.txt: 2402
+Handout 01. Decibels.doc.txt: 398
+35464.pdf.txt: 6563
+manual_kek_buildingcert_120525_1005.pdf.txt: 201
+Proigmena_Psifiaka14.ppt.txt: 403
+Mobile Communications_Lab_Book.pdf.txt: 2823
+lecture_11.pps.txt: 310
+Proigmena_Psifiaka4.ppt.txt: 178
+35406.pdf.txt: 6304
+Syllogi_Metrisewn14.ppt.txt: 164
+CommsII_Papats 2.ppt.txt: 1755
+Chapter12.pdf.txt: 647
+lecture_1.pps.txt: 339
+35523.pdf.txt: 7481
+Chapter1.doc.txt: 1865
+10810.pdf.txt: 4046
+Syllogi_Metrisewn5.ppt.txt: 212
+EbolaHFoutbreak-12-11-2014.pdf.txt: 469
+Web-Site-Design_and_Kompozer.pdf.txt: 751
+CaseStudy-KENAK-multihouse - 14_05_2012-final.pdf.txt: 945
+18412.pdf.txt: 8638
+moodle-2.pdf.txt: 263
+lecture_8.pps.txt: 130

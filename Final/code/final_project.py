@@ -10,27 +10,53 @@ import re
 
 
 class DocError(Exception):
+    '''
+
+    Exception to be risen in case of document error along with the proper message each time
+    
+    '''
     pass
+
 
 class FrequenciesGenerator:
 
     def __init__(self,folder_name):
+        '''
+        Class initialiser
 
+        Parameters:     folder_name: string
+                        The path of the dataset folder
+                        
+        '''
+
+        # Instance variables: source_folder and the dictionaries file_frequencies and total_frequencies
         self.source_folder = folder_name
         
         # Dictionary initialisation
         self.file_frequencies = {}
         self.total_frequencies = {}
 
-    #check regex for better splitting
-    def tokenize_text(self, text):
 
-        # Text cleaning 
-        text = re.sub(r"\s+"," ",text)
-        text = re.sub(r"- ","",text)
-        text = re.sub(r"[-]{2,}","-",text)
-        text = re.sub(r"[_]{2,}","_",text)
+    def tokenize_text(self, text):
+        '''
+        Text tokenizer for text cleaning and splitting into tokens
+
+        Parameters:     text: string
+                        The text of a file from the given dataset
+                        
+        '''
+
+        # Text cleaning using regular expressions
+        text = re.sub(r"\s+"," ",text)      # multiple whitespaces -> single space
+        text = re.sub(r"- ","",text)        # removes dash+space pattern
+        text = re.sub(r"[-]{2,}","-",text)  # removes multiple sequential dashes (keeps the 1st)
+        text = re.sub(r"[_]{2,}","_",text)  # removes multiple sequential underscores (keeps the 1st)
+        # basic token pattern comprising alphanumberic characters, dashes and underscores
         tokens = re.findall(r"[\w-]+", text.lower())
+        
+        for char in ["-","_"]:
+            if char in tokens:
+                tokens.remove(char)
 
         return tokens
 
@@ -58,12 +84,13 @@ class FrequenciesGenerator:
                 
                 except DocError as doc_error:
                     print(f"{doc_error.args[0]}")
-                    # print(f"\nERROR: '{f_name}' is not a .txt file !\n")
 
                 else:
                     f_path = os.path.join(sub_d_path, f_name)
-                    file_text = open(f_path,"r").read()
+                    file_text_reader = open(f_path,"r")
+                    file_text = file_text_reader.read()
                     text_tokens = self.tokenize_text(file_text)
+                    file_text_reader.close()
                     token_freq = self.generate_frequencies(text_tokens)
                     self.file_frequencies[f_name] = token_freq
                 
@@ -144,14 +171,4 @@ if __name__ == "__main__":
     
     freqGen = FrequenciesGenerator("../data/test_data_901_final_project/")
     freqGen.read_folder()
-    # print(freqGen.calculate_similarity("Chapter8.pdf.txt","Chapter12.pdf.txt"))
-
-    # print(freqGen.get_frequency("ενότητα:","Chapter8.pdf.txt"))
-
-    # print(freqGen.file_frequencies)
-    # print(freqGen.total_frequencies)
-
-    # f_out = open("./file_frequencies.txt","wb+")
-    # f_out.write(freqGen.file_frequencies)
-
 
