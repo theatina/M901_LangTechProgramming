@@ -13,7 +13,9 @@ text = open("./test_text.txt","r").read()
 
 # # [a-z0-9_]@[a-z0-9_].[a-z] 
 
-for i,y,z in os.walk("../../"):
-    print(i,y,z)
+# for i,y,z in os.walk("../../"):
+#     print(i,y,z)
+ma_dict = {}
+print(ma_dict =={})
 
 # print(tokens)

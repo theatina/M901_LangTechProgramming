@@ -14,11 +14,24 @@ import re
 
 class DocError(Exception):
     '''
-    Exception to be risen in case of document error along with the proper message each time
+    Exception to be risen in case of document error along with the proper message each time (eg. not found, lacking the proper extension, etc. )
     
     '''
     pass
 
+class DictError(Exception):
+    '''
+    Exception to be risen in case of dictionary error (eg. not initialized)
+    
+    '''
+    pass
+
+class PathError(Exception):
+    '''
+    Exception to be risen in case of path error (eg. inexistent)
+    
+    '''
+    pass
 
 class FrequenciesGenerator:
 
@@ -27,7 +40,7 @@ class FrequenciesGenerator:
         Class initialiser
 
         Parameters:     folder_name: string
-                        The path of the dataset folder
+                        The path of the dataset folder given by the user when creating an instance of the class
                         
         '''
 
@@ -39,44 +52,52 @@ class FrequenciesGenerator:
         self.total_frequencies = {}
 
 
-    def tokenize_text(self, text):
+    def tokenize(self, text):
         '''
-        Text tokenizer for text cleaning and splitting into tokens
+        Performs text cleaning and splitting into tokens by employing regular expressions
 
         Parameters:     text: string
-                        The text of a file from the given dataset
-                        
+                        The text of a file from the given dataset to be tokenized
+
+        Returns:        tokens: list
+                        List of tokens after splitting the text using regex
+
         '''
 
         # Text cleaning using regular expressions
-        text = re.sub(r"\s+"," ",text)      # multiple whitespaces -> single space
-        text = re.sub(r"- ","",text)        # removes dash+space pattern
-        text = re.sub(r"[-]{2,}","-",text)  # removes multiple sequential dashes (keeps the 1st)
-        text = re.sub(r"[_]{2,}","_",text)  # removes multiple sequential underscores (keeps the 1st)
-        # basic token pattern comprising alphanumberic characters, dashes and underscores
+        text = re.sub(r"\s+"," ",text)      # Multiple whitespaces -> single space
+        text = re.sub(r"- ","",text)        # Removes dash+space pattern
+        text = re.sub(r"[-]{2,}","-",text)  # Removes multiple sequential dashes (keeps the 1st)
+        text = re.sub(r"[_]{2,}","_",text)  # Removes multiple sequential underscores (keeps the 1st)
+        # Basic token pattern comprising alphanumberic characters, dashes and underscores
+        # The tokens are all in lower case so as to avoid case sensitive duplicates
         tokens = re.findall(r"[\w-]+", text.lower())
         
+        # Removing sole occurrences of the two characters below, from the token list
         for char in ["-","_"]:
             if char in tokens:
                 tokens.remove(char)
 
         return tokens
 
+
     def generate_frequencies(self, word_list):
         '''
-        Finds the frequency of the given token
+        Creates a word frequency dictionary of the 'word_list' given by the user
 
-        Parameters:     token: string
-                        token of which the frequency is found - if the token is included in either the document 'f_name' (if given) or the whole corpus
+        Parameters:     word_list: list
+                        The list of words to be used for the creation of the frequency dictionary
 
-        Returns:        frequency: int
-                        frequency of the token if the token is found in the respective dictionary or 0 if the token is not found or the document 'f_name' given, does not exist
+        Returns:        freq_dict: dictionary
+                        The frequency dictionary of the list of words given above
 
         '''
-
+        # Initialization of the dictionary
         freq_dict = {}
+
+        # In case the 
         if len(word_list)==0:
-            return -9
+            return freq_dict
         else:
             for i in word_list:
                 if i in freq_dict:
@@ -89,22 +110,18 @@ class FrequenciesGenerator:
 
     def read_folder(self):
         '''
-        Finds the frequency of the given token
-
-        Parameters:     token: string
-                        token of which the frequency is found - if the token is included in either the document 'f_name' (if given) or the whole corpus
-
-        Returns:        frequency: int
-                        frequency of the token if the token is found in the respective dictionary or 0 if the token is not found or the document 'f_name' given, does not exist
-
+        Performs recursive traversing of the 'source_folder' given by the user when creating an instance of the 'FrequenciesGenerator' Class, to get the tokens from each document and the respective frequencies
+       
         '''
+        if not os.path.exists(self.source_folder):
+            raise PathError(f"\n\nERROR: Folder '{self.source_folder} does not exist!'\n")
 
         for sub_d_path, d_names, files_d in os.walk(self.source_folder):
             for f_name in files_d:
                 try:
                     # Ensuring that only the .txt files are used
                     if not f_name.endswith('.txt'):
-                        raise DocError(f"\nERROR: '{f_name}' is not a .txt file !\n")
+                        raise DocError(f"\n\nERROR: '{f_name}' is not a .txt file !\n")
                 
                 except DocError as doc_error:
                     print(f"{doc_error.args[0]}")
@@ -113,13 +130,14 @@ class FrequenciesGenerator:
                     f_path = os.path.join(sub_d_path, f_name)
                     file_text_reader = open(f_path,"r")
                     file_text = file_text_reader.read()
-                    text_tokens = self.tokenize_text(file_text)
+                    text_tokens = self.tokenize(file_text)
                     file_text_reader.close()
                     token_freq = self.generate_frequencies(text_tokens)
+                    if token_freq=={}:
+                        raise DictError("\nERROR: Something went wrong with the dictionary (check files / token list)!\n")
+                        
                     self.file_frequencies[f_name] = token_freq
             
-            for d in d_names:
-                print(d)
 
         for f_name in self.file_frequencies:
             # file_dir = self.file_frequencies[f_name]
@@ -129,8 +147,6 @@ class FrequenciesGenerator:
                 else:
                     self.total_frequencies[token]=1
                 
-            # print(f_name)
-        # print(counter)
 
     def get_frequency(self, token, f_name=None):
         '''
@@ -150,7 +166,7 @@ class FrequenciesGenerator:
         if f_name is None:
             frequency = self.total_frequencies.get(token)
             if frequency==None:
-                error_msg = f"\nERROR: Token '{token}' not found !\n"
+                error_msg = f"\nERROR: Token '{token}' not found in corpus !\n"
         else:
             # If f_name is  given, then the frequency of the token in the particular document 'f_name' is returned
 
@@ -159,26 +175,31 @@ class FrequenciesGenerator:
                 error_msg = f"\nERROR: Filename '{f_name}' does not exist !\n"
             else:
                 frequency = self.file_frequencies[f_name].get(token)
+                if frequency==None:
+                    error_msg = f"\nERROR: Token '{token}' not found in document '{f_name}' !\n"
 
-        # If the given token is not found, a value of zero is returned
+        # If the given token is not found or the given filepath does not exist, a value of zero is returned, after the respective error message is printed
         if frequency == None:
             print(error_msg)
             frequency = 0
             return frequency
         
-        # Else, the frequency of the token is returned
+        # Else (if found in corpus/document), the frequency of the token is returned
         return frequency
 
 
     def calculate_similarity(self, file_a, file_b):
         '''
-        Finds the frequency of the given token
+        Calculates the Jaccard similarity between 2 files a,b ( |intersection(a,b)| / |union(a,b)| )
 
-        Parameters:     token: string
-                        token of which the frequency is found - if the token is included in either the document 'f_name' (if given) or the whole corpus
+        Parameters:     file_a: string
+                        The name of the 1st file to be compared
 
-        Returns:        frequency: int
-                        frequency of the token if the token is found in the respective dictionary or 0 if the token is not found or the document 'f_name' given, does not exist
+                        file_b: int
+                        The name of the 2nd file to be compared with the 1st, file_a
+
+        Returns:        file_similarity: int
+                        The value of the Jaccard similarity (percentage) between the two files, file_a & file_b
 
         '''
 
