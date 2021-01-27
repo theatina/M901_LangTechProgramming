@@ -1,8 +1,8 @@
 Total tokens in corpus: 95421
 
-Frequency: 3 | count: 3989
-Frequency: 2 | count: 7550
-Frequency: 1 | count: 63981
+Frequency: 3 | count: 7235
+Frequency: 2 | count: 14032
+Frequency: 1 | count: 44432
 
 
 File   :   Number of tokens

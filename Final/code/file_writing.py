@@ -49,6 +49,8 @@ for i in freqGen.file_frequencies.keys():
         maxim = doc_dict_tokens
     f_corpus_stats.write(f"\n{i}: {doc_dict_tokens}")
 
+print(maxim)
+
 f_corpus_stats.close()
 
 
