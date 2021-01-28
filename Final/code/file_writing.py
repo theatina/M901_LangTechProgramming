@@ -9,7 +9,7 @@ LT1200012
 from collections import Counter
 import final_project as fpro
 
-freqGen = fpro.FrequenciesGenerator("../data/test_data_901_final_project/")
+freqGen = fpro.FrequenciesGenerator("./test_data_901_final_project/")
 freqGen.read_folder()
 
 
