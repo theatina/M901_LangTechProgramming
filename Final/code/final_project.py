@@ -26,6 +26,13 @@ class DictError(Exception):
     '''
     pass
 
+class DictKeyError(Exception):
+    '''
+    Exception to be risen in case of dictionary key error (eg. not found)
+    
+    '''
+    pass
+
 class PathError(Exception):
     '''
     Exception to be risen in case of path error (eg. inexistent)
@@ -67,7 +74,7 @@ class FrequenciesGenerator:
 
         # Text cleaning using regular expressions
         text = re.sub(r"\s+"," ",text)      # Multiple whitespaces -> single space
-        text = re.sub(r"- ","",text)        # Removes dash+space pattern
+        text = re.sub(r"- ","",text)        # Removes dash+space pattern - eg. hyphenation
         text = re.sub(r"[-]{2,}","-",text)  # Removes multiple sequential dashes (keeps the 1st)
         text = re.sub(r"[_]{2,}","_",text)  # Removes multiple sequential underscores (keeps the 1st)
         # Basic token pattern comprising alphanumberic characters, dashes and underscores
@@ -115,15 +122,21 @@ class FrequenciesGenerator:
 
     def read_folder(self):
         '''
-        Performs recursive traversing of the 'source_folder' given by the user when creating an instance of the 'FrequenciesGenerator' Class, to get the tokens from each document and the respective frequencies
+        Performs traversing of the 'source_folder' (given by the user when creating an instance of the 'FrequenciesGenerator' Class) directory tree, to get the tokens from each document and their respective frequencies, used to create the 'file_frequencies' dictionary of file dictionaries and finally the 'total_frequencies' dictionary of all the tokens in the corpus
        
         '''
 
         # Checks that the source_folder path exists, else it raises a PathError with the proper error message
-        if not os.path.exists(self.source_folder):
-            raise PathError(f"\n\nERROR: Folder '{self.source_folder} does not exist!'\n")
+        try:
+            if not os.path.exists(self.source_folder):
+                raise PathError(f"\n\nERROR: Folder '{self.source_folder}' does not exist!\n")
+        
+        except PathError as p_err:
+        # If the source folder given does not exist, then the  PathError raised, causes the programme to print the respective error message and quit
+            print(f"{p_err.args[0]}")
+            exit()
 
-        # Recursive traversing of the given source_folder path
+        # Traversing of the source_directory tree (default is topdown)
         for sub_d_path, d_names, files_d in os.walk(self.source_folder):
             # For each .txt file, tokenization is performed and then the dictionary of that specific file is created
             for f_name in files_d:
@@ -131,19 +144,20 @@ class FrequenciesGenerator:
                 try:
                     # Ensuring that only the .txt files are used, else a DocError exception with the proper error message (as exception argument) is raised
                     if not f_name.endswith('.txt'):
-                        raise DocError(f"\n\nERROR: '{f_name}' is not a .txt file !\n")
+                        raise DocError(f"\nERROR: '{f_name}' is not a .txt file !\n")
             
                     # Each .txt file from the given dataset folder path (source_folder) is opened and tokenized
                     f_path = os.path.join(sub_d_path, f_name)
                     file_text_reader = open(f_path,"r")
                     file_text = file_text_reader.read()
+                    # The file is closed
+                    file_text_reader.close()
                     
                     text_tokens = self.tokenize(file_text)
-                    # In case of an error related to the file frequency dictionary, an exception is raised, along with a proper error message
+                    # In case of an error related to the file tokenization, an exception is raised, along with a proper error message
                     if len(text_tokens)==0:
                         raise DocError(f"\nERROR: Something went wrong with the text tokenization of file '{f_name}' (file could be empty) !\n")
                     
-                    file_text_reader.close()
                     
                     # The text_tokens list of the splitted text file are used to create the file frequency dictionary
                     token_freq = self.generate_frequencies(text_tokens)
@@ -204,56 +218,62 @@ class FrequenciesGenerator:
             
         # If the user has given 1 or 2 arguments when calling the function, a check is performed to see if they have specified the file in which the frequency of the token will be searched, otherwise, the frequency of the token in the whole corpus is returned
         else:
-            token=args[0]
+            # The token search is case insensitive, therefore the lower case of the token is being searched in the proper dictionary (which was built wihout case sensitivity)
+            token=args[0].lower()
             if len(args)==2:
                 f_name=args[1]
 
         frequency = None
         error_msg = ""
-        # If f_name is not given, then the frequency of the token in the corpus is returned
-        if f_name is None:
-            frequency = self.total_frequencies.get(token)
-            # Checks if token is included in the corpus
-            if frequency==None:
-                error_msg = f"\nERROR: Token '{token}' not found in corpus !\n"
-        else:
-            # If f_name is  given, then the frequency of the token in the particular document 'f_name' is returned
 
-            # Check if file exists (if it is contained in the dictionary keys)
-            if f_name not in self.file_frequencies.keys():
-                error_msg = f"\nERROR: Filename '{f_name}' does not exist !\n"
-            else:
-                frequency = self.file_frequencies[f_name].get(token)
-                # Checks if token is included in the given file
+
+        try:
+            # If f_name is not given(==None), then the frequency of the token in the corpus is returned
+            if f_name is None:
+                frequency = self.total_frequencies.get(token)
+                # Checks if token is included in the corpus
                 if frequency==None:
-                    error_msg = f"\nERROR: Token '{token}' not found in document '{f_name}' !\n"
+                    raise DictKeyError(f"\nERROR: Token '{token}' not found in the corpus !\n")
+                    # error_msg = f"\nERROR: Token '{token}' not found in corpus !\n"
+            else:
+                # If f_name is  given, then the frequency of the token in the particular document 'f_name' is returned
 
-        # If the given token is not found or the given filepath does not exist, a value of zero is returned, after the respective error message is printed
-        if frequency == None:
-            print(error_msg)
+                # Check if file exists (if it is contained in the dictionary keys)
+                if f_name not in self.file_frequencies.keys():
+                    raise DocError(f"\nERROR: File '{f_name}' does not exist !\n")
+                else:
+                    frequency = self.file_frequencies[f_name].get(token)
+                    # Checks if token is included in the given file
+                    if frequency==None:
+                        raise DictKeyError(f"\nERROR: Token '{token}' not found in document '{f_name}' !\n")
+                            
+        except (DocError, DictKeyError) as d_err:
+            # If the given token is not found or the given filepath does not exist, a value of zero is returned, after the respective error message is printed
+            print(f"{d_err.args[0]}")
             frequency = 0
             return frequency
-        
-        # Else (if found in corpus/document), the frequency of the token is returned
-        return frequency
+
+        else:
+            # Else (if found in corpus/document), the frequency of the token is returned
+            return frequency
 
 
     def calculate_similarity(self, file_a, file_b):
         '''
-        Calculates the Jaccard similarity between 2 files a,b ( |intersection(a,b)| / |union(a,b)| )
+        Calculates the Jaccard similarity between 2 files a,b ( |intersection(a,b)| / |union(a,b)| - cardinality of the intersection of a,b divided by the cardinality of their union)
 
         Parameters:     file_a: string
                         The name of the 1st file to be compared
 
                         file_b: string
-                        The name of the 2nd file to be compared with the 1st, file_a
+                        The name of the 2nd file to be compared with the 1st file
 
         Returns:        file_similarity: float
                         The value of the Jaccard similarity (percentage) between the two files, file_a & file_b
 
         '''
         # Initial value of the similatiry is zero
-        file_similarity = 0
+        file_similarity = 0.0
         
         # Possible exception(due to non-existent file) handling with try/except
         try:
@@ -261,8 +281,16 @@ class FrequenciesGenerator:
             for f_n in [file_a,file_b]:
                 # If not, raise the DocError with a proper error message as an exception argument
                 if f_n not in self.file_frequencies.keys():
-                    raise DocError(f"\nERROR: Filename '{f_n}' does not exist !\n")
-            
+                    raise DocError(f"\nERROR: File '{f_n}' does not exist !\n")
+
+        except DocError as d_error:
+            # If DocError exception has been raised in the try clause above, then the specific error message that was defined (exception argument) is printed and a frequency of zero is returned
+            print(d_error.args[0])
+            return file_similarity
+        
+        # If no error was raised, the similarity is calculated and returned
+        else:
+
             # The token sets of the two files
             file_a_tokens_set = set(self.file_frequencies[file_a].keys())
             file_b_tokens_set = set(self.file_frequencies[file_b].keys())
@@ -272,19 +300,14 @@ class FrequenciesGenerator:
             total_tokens = len(file_a_tokens_set.union(file_b_tokens_set))
             
             # Jaccard similarity formula ( percentage of the result )
-            file_similarity = (common_tokens/(total_tokens))*100.0
+            file_similarity = (common_tokens/total_tokens)*100.0
 
-        except DocError as d_error:
-            # If DocError exception has been raised in the try clause above, then the specific error message that was defined (exception argument) is printed
-            print(d_error.args[0])
-
-        # If everything went well, the similarity percentage between the two files is returned
-        return file_similarity
-
+            # If everything went well, the similarity percentage between the two files is returned
+            return file_similarity
 
 
 if __name__ == "__main__":
     
-    freqGen = FrequenciesGenerator("../data/test_data_901_final_project/")
+    freqGen = FrequenciesGenerator("./test_data_901_final_project/")
     freqGen.read_folder()
 
